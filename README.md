@@ -2,7 +2,7 @@
 
 A small Chrome extension that tidies your tabs in one click:
 
-- **Closes duplicate tabs** across all windows. It keeps the pinned or active copy.
+- **Closes duplicate tabs** across all windows, grouped or not. It keeps the active copy if there is one, otherwise a pinned copy, otherwise the leftmost one.
 - **Groups the remaining tabs by site** (for example `hub88.atlassian.net` or `docs.google.com`), each site in its own color.
 - **Leaves pinned tabs and groups you named yourself alone.**
 

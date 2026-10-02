@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Tab Tidy",
-  "version": "1.1",
+  "version": "1.2",
   "description": "Closes duplicate tabs and groups the rest by domain.",
   "permissions": ["tabs", "tabGroups"],
   "background": { "service_worker": "background.js" },

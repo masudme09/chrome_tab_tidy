@@ -62,7 +62,8 @@ const isAutoGroup = (title) => !!title && title.includes(".") && !/\s/.test(titl
 
 async function closeDuplicates() {
   const tabs = await chrome.tabs.query({ windowType: "normal" });
-  const rank = (t) => (t.pinned ? 0 : 2) + (t.active ? 0 : 1); // keep pinned/active copies first
+  // Which copy survives: the active tab, then a pinned one, then the leftmost one.
+  const rank = (t) => (t.active ? 0 : 2) + (t.pinned ? 0 : 1);
   const byUrl = new Map();
   for (const t of tabs) {
     const k = normalizeUrl(t.pendingUrl || t.url);
@@ -77,7 +78,10 @@ async function closeDuplicates() {
   }
   if (toClose.length) {
     console.log("Tab Tidy closing duplicates:", toClose.map((id) => tabs.find((t) => t.id === id)?.url));
-    await chrome.tabs.remove(toClose);
+    // Close one by one so a tab that vanished mid-run can't stop the rest from closing.
+    for (const id of toClose) {
+      try { await chrome.tabs.remove(id); } catch (e) { console.warn("Tab Tidy could not close tab", id, e); }
+    }
   }
   return toClose.length;
 }
